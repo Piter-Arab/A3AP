@@ -5,13 +5,20 @@ import Container from "./Container";
 import Button from "./Button";
 import { getServerStatus, toggleServer } from "@/actions/server-control";
 
-export default function ArkCard() {
+export default function ArkCard({
+  avalible,
+  setIsAvalible,
+}: {
+  avalible: boolean;
+  setIsAvalible: React.Dispatch<React.SetStateAction<"arma" | "ark" | "null">>;
+}) {
   const [isOnline, setIsOnline] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   const checkStatus = async () => {
     const result = await getServerStatus("ark");
     setIsOnline(result.isOnline);
+    setIsAvalible(result.isOnline ? "ark" : "null");
   };
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
@@ -44,7 +51,9 @@ export default function ArkCard() {
   };
 
   return (
-    <Container className="flex-1 flex flex-col justify-between">
+    <Container
+      className={`flex-1 flex flex-col justify-between ${avalible ? "border-red-500/20" : ""}`}
+    >
       <p>Ark Evolved Server</p>
 
       <p className="text-sm text-neutral-400">
