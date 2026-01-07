@@ -5,12 +5,12 @@ import Container from "./Container";
 import Button from "./Button";
 import { getServerStatus, toggleServer } from "@/actions/server-control";
 
-export default function DashCard() {
+export default function ArkCard() {
   const [isOnline, setIsOnline] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   const checkStatus = async () => {
-    const result = await getServerStatus();
+    const result = await getServerStatus("ark");
     setIsOnline(result.isOnline);
   };
 
@@ -28,11 +28,11 @@ export default function DashCard() {
       if (action === "upcheck") {
         await checkStatus();
       } else if (action === "restart") {
-        await toggleServer("stop");
+        await toggleServer("ark", "stop");
         await new Promise((r) => setTimeout(r, 10000));
-        await toggleServer("start");
+        await toggleServer("ark", "start");
       } else {
-        await toggleServer(action as "start" | "stop");
+        await toggleServer("ark", action as "start" | "stop");
       }
 
       setTimeout(checkStatus, 2000);
@@ -45,7 +45,7 @@ export default function DashCard() {
 
   return (
     <Container className="flex-1 flex flex-col justify-between">
-      <p>Arma III Server</p>
+      <p>Ark Evolved Server</p>
 
       <p className="text-sm text-neutral-400">
         Status:{" "}

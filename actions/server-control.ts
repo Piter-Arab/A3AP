@@ -5,13 +5,21 @@ import util from "util";
 const execPromise = util.promisify(exec);
 
 const SCRIPTS = {
-  start: "/home/armasrv/steamcmd/arma3server/start.sh",
-  stop: "/home/armasrv/stop.sh",
+  arma: {
+    start: "/home/armasrv/steamcmd/arma3server/start.sh",
+    stop: "/home/armasrv/stop-arma.sh",
+  },
+  ark: {
+    start: "/home/armasrv/start-ark.sh",
+    stop: "/home/armasrv/stop-ark.sh",
+  },
 };
 
-export async function getServerStatus() {
+export async function getServerStatus(game: "ark" | "arma") {
   try {
-    const { stdout } = await execPromise('ps aux | grep "[a]rma3server"');
+    const { stdout } = await execPromise(
+      `ps aux | grep "${game === "ark" ? "[S]hooterGameServer" : "[a]rma3server"}"`,
+    );
 
     return { isOnline: stdout.length > 0 };
   } catch (error) {
@@ -19,8 +27,11 @@ export async function getServerStatus() {
   }
 }
 
-export async function toggleServer(action: "start" | "stop") {
-  const command = action === "start" ? SCRIPTS.start : SCRIPTS.stop;
+export async function toggleServer(
+  game: "ark" | "arma",
+  action: "start" | "stop",
+) {
+  const command = action === "start" ? SCRIPTS[game].start : SCRIPTS[game].stop;
 
   try {
     await execPromise(command);
