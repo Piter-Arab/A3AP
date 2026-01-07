@@ -5,7 +5,7 @@ export default function Home() {
     <div className="flex justify-center items-center h-screen">
       <Container>
         <div className="flex flex-col items-center gap-3">
-          <p className="text-3xl">A3AP</p>
+          <p className="text-3xl">VPS-A8L</p>
           <form action="" className="flex flex-col">
             <label className="text-sm text-neutral-400" htmlFor="passwd">
               Password:
